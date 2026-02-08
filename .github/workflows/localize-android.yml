@@ -32,15 +32,13 @@ jobs:
           # 优先检查SIGNING_KEY机密是否存在
           if [ -n "${{ secrets.SIGNING_KEY }}" ]; then
             echo "Decoding base64 signing key..."
-            # 仅当有密钥时创建keystore目录，-p确保目录不存在才创建、存在不报错
-            mkdir -p keystore
-            base64 -d <<< "${{ secrets.SIGNING_KEY }}" > keystore/Termius_zh.jks
+            base64 -d <<< "${{ secrets.SIGNING_KEY }}" > Termius_zh.jks
           fi
             echo "${{ secrets.APK_SIGN_PROPERTIES }}" > apk.sign.properties
 
           # 计算 jks 文件的 SHA-256 哈希值
-          if ls keystore/*.jks >/dev/null 2>&1; then
-            sha256sum keystore/*.jks
+          if ls *.jks >/dev/null 2>&1; then
+            sha256sum *.jks
           fi
 
           python apktools.py
